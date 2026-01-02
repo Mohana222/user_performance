@@ -95,6 +95,16 @@ const App: React.FC = () => {
     }).filter(g => g.options.length > 0);
   }, [combinedSelectedProjectIds, availableSheets, projects]);
 
+  // Force clear credentials whenever authentication state changes to false
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setUsername('');
+      setPassword('');
+      setLoginError('');
+      setShowPassword(false);
+    }
+  }, [isAuthenticated]);
+
   useEffect(() => {
     if (isAuthenticated) {
       const loadProjects = async () => {
@@ -194,6 +204,11 @@ const App: React.FC = () => {
     setSelectedProdProjectIds([]);
     setSelectedHourlyProjectIds([]);
     setSelectedSheetIds([]);
+    
+    // Explicitly reset states (redundant but safe)
+    setUsername('');
+    setPassword('');
+    setShowPassword(false);
   };
 
   const addProject = async (p: Omit<Project, 'id' | 'color'>) => {
@@ -328,7 +343,7 @@ const App: React.FC = () => {
           <div className="inline-block px-4 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 text-[10px] font-black tracking-widest uppercase mb-4">Secure Portal</div>
           <h1 className="text-5xl font-black shimmer-text py-2">DesiCrew</h1>
         </div>
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-6" autoComplete="off">
           <div className="relative group">
             <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-violet-400 transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -337,6 +352,7 @@ const App: React.FC = () => {
               type="text" 
               placeholder="Username" 
               required 
+              autoComplete="off"
               className="w-full bg-slate-900/60 border border-slate-800/80 text-white pl-14 pr-5 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-violet-500/50 transition-all" 
               value={username} 
               onChange={e => setUsername(e.target.value)} 
@@ -351,6 +367,7 @@ const App: React.FC = () => {
               type={showPassword ? "text" : "password"} 
               placeholder="Password" 
               required 
+              autoComplete="off"
               className="w-full bg-slate-900/60 border border-slate-800/80 text-white pl-14 pr-14 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-violet-500/50 transition-all" 
               value={password} 
               onChange={e => setPassword(e.target.value)} 
@@ -380,12 +397,12 @@ const App: React.FC = () => {
     <div className="flex h-screen bg-[#020617] text-slate-200 overflow-hidden relative">
       <StarField />
       <aside className={`bg-slate-900 border-r border-slate-800 flex flex-col z-20 transition-all duration-300 relative ${isSidebarOpen ? 'w-96' : 'w-0 overflow-hidden'}`}>
-        <div className="p-6 overflow-y-auto flex-1 custom-scrollbar min-w-[24rem]">
-          <h2 className="text-3xl font-black text-white mb-5">DesiCrew</h2>
-          <nav className="space-y-1 mb-5">
+        <div className="p-5 overflow-y-auto flex-1 custom-scrollbar min-w-[24rem]">
+          <h2 className="text-2xl font-black text-white mb-4">DesiCrew</h2>
+          <nav className="space-y-0.5 mb-5">
             {MENU_ITEMS.map((m) => (
-              <button key={m.id} onClick={() => setCurrentView(m.id as ViewType)} className={`w-full text-left px-4 py-2.5 rounded-2xl flex items-center gap-3 transition-all ${currentView === m.id ? 'bg-violet-600 text-white' : 'text-slate-400 hover:bg-slate-800'}`}>
-                <span className="text-xl">{m.icon}</span><span className="font-bold">{m.label}</span>
+              <button key={m.id} onClick={() => setCurrentView(m.id as ViewType)} className={`w-full text-left px-4 py-2 rounded-xl flex items-center gap-3 transition-all ${currentView === m.id ? 'bg-violet-600 text-white shadow-lg' : 'text-slate-400 hover:bg-slate-800'}`}>
+                <span className="text-lg">{m.icon}</span><span className="font-bold text-sm">{m.label}</span>
               </button>
             ))}
           </nav>
