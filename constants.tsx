@@ -19,7 +19,7 @@ export const VALID_USERS: Record<string, string> = {
 export const BIRTHDAYS: Birthday[] = [
   { name: "Ramu M", date: "03-06", role: "Senior Crewmate" },
   { name: "Santhiya P", date: "06-27", role: "Junior Crewmate" },
-  { name: "Arun Kumar S", date: "01-02", role: "Annotator" }, 
+  { name: "Arun Kumar S", date: "09-02", role: "Annotator" }, 
   { name: "Ishwarya R", date: "02-04", role: "Annotator" }, 
   { name: "Surandhar D", date: "11-18", role: "Annotator" }, 
   { name: "Mariyam Nisha R", date: "01-08", role: "Annotator" }, 

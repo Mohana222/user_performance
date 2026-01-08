@@ -192,6 +192,10 @@ const App: React.FC = () => {
       sessionStorage.setItem('ok', '1');
       setIsAuthenticated(true);
       setLoginError('');
+      // Clear credentials from state immediately upon successful login
+      setUsername('');
+      setPassword('');
+      setShowPassword(false);
     } else {
       setLoginError('Invalid username or password.');
     }
@@ -205,7 +209,7 @@ const App: React.FC = () => {
     setSelectedHourlyProjectIds([]);
     setSelectedSheetIds([]);
     
-    // Explicitly reset states (redundant but safe)
+    // Explicitly reset states
     setUsername('');
     setPassword('');
     setShowPassword(false);
@@ -352,7 +356,7 @@ const App: React.FC = () => {
               type="text" 
               placeholder="Username" 
               required 
-              autoComplete="off"
+              autoComplete="username"
               className="w-full bg-slate-900/60 border border-slate-800/80 text-white pl-14 pr-5 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-violet-500/50 transition-all" 
               value={username} 
               onChange={e => setUsername(e.target.value)} 
@@ -367,7 +371,7 @@ const App: React.FC = () => {
               type={showPassword ? "text" : "password"} 
               placeholder="Password" 
               required 
-              autoComplete="off"
+              autoComplete="current-password"
               className="w-full bg-slate-900/60 border border-slate-800/80 text-white pl-14 pr-14 py-4 rounded-2xl outline-none focus:ring-2 focus:ring-violet-500/50 transition-all" 
               value={password} 
               onChange={e => setPassword(e.target.value)} 
